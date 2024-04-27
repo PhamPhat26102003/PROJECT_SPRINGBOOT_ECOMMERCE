@@ -1,12 +1,12 @@
 package projectspringboot.admin.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import projectspringboot.library.model.Accessories;
 import projectspringboot.library.model.Category;
@@ -72,5 +72,78 @@ public class AccessoriesController {
             redirectAttributes.addFlashAttribute("failed", "Failed to add new accessories!!!");
             return "redirect:/add-accessories";
         }
+    }
+
+    @RequestMapping(value = "/enable-accessories/{id}", method = {RequestMethod.PUT, RequestMethod.GET})
+    public String enableById(@PathVariable("id") Long id, RedirectAttributes redirectAttributes){
+        try{
+            accessoriesService.activatedById(id);
+            redirectAttributes.addFlashAttribute("success", "Enable success");
+            return "redirect:/accessories";
+        }catch(DataIntegrityViolationException dataIntegrityViolationException){
+            dataIntegrityViolationException.printStackTrace();
+            redirectAttributes.addFlashAttribute("failed", "Failed to enable!!!");
+            return "redirect:/accessories";
+        }catch(Exception e){
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("failed", "Error to server!!!");
+            return "redirect:/accessories";
+        }
+    }
+
+    @RequestMapping(value = "/delete-accessories/{id}", method = {RequestMethod.PUT, RequestMethod.GET})
+    public String deleteById(@PathVariable("id") Long id, RedirectAttributes redirectAttributes){
+        try{
+            accessoriesService.deletedById(id);
+            redirectAttributes.addFlashAttribute("success", "Delete success");
+            return "redirect:/accessories";
+        }catch(DataIntegrityViolationException dataIntegrityViolationException){
+            dataIntegrityViolationException.printStackTrace();
+            redirectAttributes.addFlashAttribute("failed", "Failed to delete!!!");
+            return "redirect:/accessories";
+        }catch (Exception e){
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("failed", "Error to server!!!");
+            return "redirect:/accessories";
+        }
+    }
+
+    @GetMapping("/update-accessories/{id}")
+    public String displayUpdateAccessoriesPage(@PathVariable("id") Long id, Model model){
+        Accessories accessories = accessoriesService.findById(id);
+        List<Category> categories = categoryService.findAllByActivated();
+        model.addAttribute("accessories", accessories);
+        model.addAttribute("categories", categories);
+        model.addAttribute("title", "Update accessories");
+        return "accessories/edit-accessory";
+    }
+
+    @PostMapping("/update-accessories/{id}")
+    public String updateAccessory(@Validated Accessories accessories,
+                                  RedirectAttributes redirectAttributes,
+                                  Model model,
+                                  BindingResult bindingResult){
+        try{
+            if(bindingResult.hasErrors()){
+                List<Category> categories = categoryService.findAllByActivated();
+                model.addAttribute("categories", categories);
+                model.addAttribute("accessories", accessories);
+            }
+            accessoriesService.updateAccessories(accessories);
+            redirectAttributes.addFlashAttribute("success", "Update success");
+            return "redirect:/accessories";
+        }catch (Exception e){
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("failed", "Failed to update!!!");
+            return "redirect:/update-accessories/{id}";
+        }
+    }
+
+    @GetMapping("/search-result")
+    public String searchAccessories(@RequestParam("keyword") String keyword, Model model){
+        List<Accessories> accessories = accessoriesService.searchAccessories(keyword);
+        model.addAttribute("title", "Result");
+        model.addAttribute("accessories", accessories);
+        return "accessories/accessories-result";
     }
 }

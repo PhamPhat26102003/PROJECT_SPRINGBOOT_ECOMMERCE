@@ -25,4 +25,8 @@ public class CartItem {
     @JoinColumn(name = "product_id", referencedColumnName = "product_id")
     private Laptop laptop;
 
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "accessory_id", referencedColumnName = "accessory_id")
+    private Accessories accessories;
+
 }

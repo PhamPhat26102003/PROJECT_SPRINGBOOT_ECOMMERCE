@@ -2,10 +2,7 @@ package projectspringboot.library.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import projectspringboot.library.model.CartItem;
-import projectspringboot.library.model.Customer;
-import projectspringboot.library.model.Laptop;
-import projectspringboot.library.model.ShoppingCart;
+import projectspringboot.library.model.*;
 import projectspringboot.library.repository.ICartItemRepository;
 import projectspringboot.library.repository.IShoppingCartRepository;
 import projectspringboot.library.service.IShoppingCartService;
@@ -103,13 +100,95 @@ public class ShoppingCartService implements IShoppingCartService {
         return shoppingCartRepository.save(cart);
     }
 
-    private CartItem findCartItem(Set<CartItem> cartItems, Long laptopId){
+    @Override
+    public ShoppingCart addItemAccessoryToCart(Accessories accessories, int quantity, Customer customer) {
+        ShoppingCart cart = customer.getShoppingCart();
+
+        if(cart == null){
+            cart = new ShoppingCart();
+        }
+
+        Set<CartItem> cartItems= cart.getCartItem();
+        CartItem cartItem = findCartItem(cartItems, accessories.getId());
+
+        if(cartItems == null){
+            cartItems = new HashSet<>();
+
+            if(cartItem == null){
+                cartItem = new CartItem();
+                cartItem.setAccessories(accessories);
+                cartItem.setTotalPrice(quantity * accessories.getCostPrice());
+                cartItem.setQuantity(quantity);
+                cartItem.setCart(cart);
+                cartItems.add(cartItem);
+                cartItemRepository.save(cartItem);
+            }
+        }else{
+            if(cartItem == null){
+                cartItem = new CartItem();
+                cartItem.setAccessories(accessories);
+                cartItem.setTotalPrice(quantity * accessories.getCostPrice());
+                cartItem.setQuantity(quantity);
+                cartItem.setCart(cart);
+                cartItems.add(cartItem);
+                cartItemRepository.save(cartItem);
+            }else{
+                cartItem.setQuantity(quantity + cartItem.getQuantity());
+                cartItem.setTotalPrice(cartItem.getTotalPrice() + (quantity * accessories.getCostPrice()));
+                cartItemRepository.save(cartItem);
+            }
+        }
+
+        int totalItem = totalItem(cartItems);
+        double totalPrice = totalPrice(cartItems);
+        cart.setTotalItem(totalItem);
+        cart.setTotalPrice(totalPrice);
+        cart.setCartItem(cartItems);
+        return shoppingCartRepository.save(cart);
+    }
+
+    @Override
+    public ShoppingCart updateItemAccessoryInCart(Accessories accessories, int quantity, Customer customer) {
+        ShoppingCart cart = customer.getShoppingCart();
+        Set<CartItem> cartItems = cart.getCartItem();
+
+        CartItem cartItem = findCartItem(cartItems, accessories.getId());
+        cartItem.setQuantity(quantity);
+        cartItem.setTotalPrice(quantity * accessories.getCostPrice());
+        cartItemRepository.save(cartItem);
+
+        int totalItem = totalItem(cartItems);
+        double totalPrice = totalPrice(cartItems);
+        cart.setTotalItem(totalItem);
+        cart.setTotalPrice(totalPrice);
+        cart.setCartItem(cartItems);
+        return shoppingCartRepository.save(cart);
+    }
+
+    @Override
+    public ShoppingCart deleteItemAccessoryInCart(Accessories accessories, Customer customer) {
+        ShoppingCart cart = customer.getShoppingCart();
+        Set<CartItem> cartItems = cart.getCartItem();
+
+        CartItem cartItem = findCartItem(cartItems, accessories.getId());
+        cartItems.remove(cartItem);
+        cartItemRepository.delete(cartItem);
+
+        int totalItem = totalItem(cartItems);
+        double totalPrice = totalPrice(cartItems);
+        cart.setTotalItem(totalItem);
+        cart.setTotalPrice(totalPrice);
+        cart.setCartItem(cartItems);
+        return shoppingCartRepository.save(cart);
+    }
+
+    private CartItem findCartItem(Set<CartItem> cartItems, Long id){
         if(cartItems == null){
             return null;
         }
         CartItem cartItem = null;
         for(CartItem item : cartItems){
-            if(item.getLaptop().getId() == laptopId){
+            if(item.getLaptop().getId() == id){
                 cartItem = item;
             }
         }

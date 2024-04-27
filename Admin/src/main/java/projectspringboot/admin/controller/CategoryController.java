@@ -28,7 +28,7 @@ public class CategoryController {
             model.addAttribute("size", categories.size());
             model.addAttribute("title", "Manage category");
             model.addAttribute("categoryNew", new Category());
-            return "category";
+            return "category/category";
         }
     }
 

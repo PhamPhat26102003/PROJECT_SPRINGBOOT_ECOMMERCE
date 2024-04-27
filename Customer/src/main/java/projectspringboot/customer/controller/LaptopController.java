@@ -30,15 +30,15 @@ public class LaptopController {
         model.addAttribute("relateProducts", relateProduct);
         model.addAttribute("laptop", laptop);
         model.addAttribute("title", "Detail");
-        return "detail";
+        return "laptops/detail";
     }
 
     @GetMapping("/list-laptop")
     public String displayListLaptopPage( Model model, Principal principal){
         List<Laptop> listLaptop = laptopService.findAll();
         model.addAttribute("laptops", listLaptop);
-        model.addAttribute("title", "List laptop gaming page");
-        return "list-laptop";
+        model.addAttribute("title", "List laptop gaming");
+        return "laptops/list-laptop";
     }
 
 }

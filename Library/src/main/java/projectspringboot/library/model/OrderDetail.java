@@ -25,4 +25,8 @@ public class OrderDetail {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", referencedColumnName = "product_id")
     private Laptop laptop;
+
+    @OneToOne
+    @JoinColumn(name = "accessory_id", referencedColumnName = "accessory_id")
+    private Accessories accessories;
 }

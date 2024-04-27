@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import projectspringboot.library.model.Accessories;
 import projectspringboot.library.model.Customer;
 import projectspringboot.library.model.Laptop;
 import projectspringboot.library.model.ShoppingCart;
+import projectspringboot.library.service.IAccessoriesService;
 import projectspringboot.library.service.ICustomerService;
 import projectspringboot.library.service.ILaptopService;
 import projectspringboot.library.service.IShoppingCartService;
@@ -24,6 +26,8 @@ public class CartController {
     private ICustomerService customerService;
     @Autowired
     private ILaptopService laptopService;
+    @Autowired
+    private IAccessoriesService accessoriesService;
 
     @GetMapping("/cart")
     public String displayCartPage(Model model, Principal principal, HttpSession session){
@@ -47,13 +51,13 @@ public class CartController {
     public String addItemToCart(Model model,
                                 Principal principal,
                                 HttpServletRequest request,
-                                @RequestParam("id") Long laptopId,
+                                @RequestParam("id") Long id,
                                 @RequestParam(value = "quantity", required = false, defaultValue = "1") int quantity){
         if(principal == null){
             return "redirect:/login";
         }
-        Laptop laptop = laptopService.findById(laptopId);
-        String username = principal.getName();;
+        Laptop laptop = laptopService.findById(id);
+        String username = principal.getName();
         Customer customer = customerService.findByUsername(username);
         ShoppingCart shoppingCart = shoppingCartService.addItemToCart(laptop, quantity, customer);
         return "redirect:" + request.getHeader("Referer");
@@ -61,7 +65,7 @@ public class CartController {
 
     @RequestMapping(value = "/update-cart", method = RequestMethod.POST, params = "action=update")
     public String updateCart(@RequestParam("quantity") int quantity,
-                             @RequestParam("id") Long laptopId,
+                             @RequestParam("id") Long id,
                              Model model,
                              Principal principal){
         if(principal == null){
@@ -69,7 +73,7 @@ public class CartController {
         }else{
             String username = principal.getName();
             Customer customer = customerService.findByUsername(username);
-            Laptop laptop = laptopService.findById(laptopId);
+            Laptop laptop = laptopService.findById(id);
             ShoppingCart shoppingCart = shoppingCartService.updateItemInCart(laptop, quantity, customer);
 
             model.addAttribute("cart", shoppingCart.getTotalItem());
@@ -78,7 +82,7 @@ public class CartController {
     }
 
     @RequestMapping(value = "/update-cart", method = RequestMethod.POST, params = "action=delete")
-    public String deleteCart(@RequestParam("id") Long laptopId,
+    public String deleteCart(@RequestParam("id") Long id,
                              Model model,
                              Principal principal){
         if(principal == null){
@@ -86,9 +90,8 @@ public class CartController {
         }else{
             String username = principal.getName();
             Customer customer = customerService.findByUsername(username);
-            Laptop laptop = laptopService.findById(laptopId);
+            Laptop laptop = laptopService.findById(id);
             ShoppingCart shoppingCart = shoppingCartService.deleteItemInCart(laptop, customer);
-
             model.addAttribute("cart", shoppingCart);
             return "redirect:/cart";
         }

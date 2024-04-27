@@ -31,7 +31,7 @@ public class LoginController {
    @GetMapping("/login")
     public String loginPage(Model model){
        model.addAttribute("title", "Login page");
-       return "login";
+       return "login/login";
    }
 
    @RequestMapping("/index")
@@ -48,13 +48,13 @@ public class LoginController {
     public String registerPage(Model model){
        model.addAttribute("title", "Register page");
        model.addAttribute("adminDto", new AdminDto());
-       return "register";
+       return "login/register";
    }
 
    @GetMapping("/forgot-password")
     public String forgotPasswordPage(Model model){
        model.addAttribute("title", "Forgot password page");
-       return "forgot-password";
+       return "login/forgot-password";
    }
 
     @PostMapping("/register-new")
@@ -66,30 +66,31 @@ public class LoginController {
             if(result.hasErrors()){
                 model.addAttribute("adminDto", adminDto);
                 result.toString();
-                return "register";
+                return "redirect:/register";
             }
             String username = adminDto.getUsername();
             Admin admin = adminService.findByUsername(username);
             if(admin != null){
                 model.addAttribute("adminDto", adminDto);
                 model.addAttribute("emailError", "Your email has been registered!");
-                return "register";
+                return "redirect:/register";
             }
             if(adminDto.getPassword().equals(adminDto.getRepeatPassword())){
                 adminDto.setPassword(passwordEncoder.encode(adminDto.getPassword()));
                 adminService.save(adminDto);
                 model.addAttribute("adminDto", adminDto);
                 model.addAttribute("success", "Register successfully!!!");
+                return "redirect:/register";
             }else{
                 model.addAttribute("adminDto", adminDto);
                 redirectAttributes.addFlashAttribute("message", "Password is not the same!!!!");
                 model.addAttribute("passwordError", "Password is not the same!!!!");
-                return "register";
+                return "redirect:/register";
             }
         }catch(Exception e){
             model.addAttribute("serverError", "Something wrong here, can not register!!!");
             System.out.println("Error " + e.getMessage());
         }
-        return "register";
+        return "redirect:/register";
     }
 }

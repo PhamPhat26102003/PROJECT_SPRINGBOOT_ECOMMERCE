@@ -37,7 +37,7 @@ public class LaptopController {
         model.addAttribute("laptops", laptopList);
         model.addAttribute("size", laptopList.size());
         model.addAttribute("title", "Laptop page");
-        return "laptops";
+        return "laptops/laptops";
     }
 
     //Phan trang
@@ -52,7 +52,7 @@ public class LaptopController {
         model.addAttribute("totalPage", laptopPage.getTotalPages());
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("laptops", laptopPage);
-        return "laptops";
+        return "laptops/laptops";
     }
 
     //Tim kiem laptop
@@ -69,7 +69,7 @@ public class LaptopController {
         model.addAttribute("size", laptops.getSize());
         model.addAttribute("totalPage", laptops.getTotalPages());
         model.addAttribute("currentPage", pageNo);
-        return "result-laptop";
+        return "laptops/result-laptop";
     }
 
     @GetMapping("/add-laptop")
@@ -78,7 +78,7 @@ public class LaptopController {
         model.addAttribute("categories", categories);
         model.addAttribute("laptop", new Laptop());
         model.addAttribute("title", "Add new laptop page");
-        return "addNew-laptop";
+        return "laptops/addNew-laptop";
     }
 
     @PostMapping("/add-laptop")
@@ -94,7 +94,7 @@ public class LaptopController {
                 List<Category> categories = categoryService.findAll();
                 model.addAttribute("categories", categories);
                 model.addAttribute("laptops", laptop);
-                return "redirect:/addNew-laptop";
+                return "redirect:/add-laptop";
             }
 
             String filename = storeService.storeFile(laptop.getImage());
@@ -116,7 +116,7 @@ public class LaptopController {
         model.addAttribute("laptops", laptop);
         model.addAttribute("categories", categories);
         model.addAttribute("title", "Update laptop");
-        return "edit-laptop";
+        return "laptops/edit-laptop";
     }
 
     @PostMapping("/update-laptop/{id}")
@@ -129,7 +129,7 @@ public class LaptopController {
                 List<Category> categories = categoryService.findAll();
                 model.addAttribute("categories", categories);
                 model.addAttribute("laptops", laptop);
-                return "edit-laptop";
+                return "laptops/edit-laptop";
             }
             laptopService.updateLaptop(laptop);
             redirectAttributes.addFlashAttribute("success", "Update successfully");
