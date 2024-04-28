@@ -13,9 +13,4 @@ public interface IShoppingCartService {
 
     ShoppingCart deleteItemInCart(Laptop laptop, Customer customer);
 
-    //Accessory
-    ShoppingCart addItemAccessoryToCart(Accessories accessories, int quantity, Customer customer);
-    ShoppingCart updateItemAccessoryInCart(Accessories accessories, int quantity, Customer customer);
-    ShoppingCart deleteItemAccessoryInCart(Accessories accessories, Customer customer);
-
 }

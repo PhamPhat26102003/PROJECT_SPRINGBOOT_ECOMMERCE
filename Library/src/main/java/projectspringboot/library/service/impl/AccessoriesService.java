@@ -64,6 +64,11 @@ public class AccessoriesService implements IAccessoriesService {
     }
 
     @Override
+    public List<Accessories> relatedProduct(Long categoryId) {
+        return accessoriesRepository.relatedProduct(categoryId);
+    }
+
+    @Override
     public void activatedById(Long id) {
         Accessories accessories = accessoriesRepository.getById(id);
         accessories.set_activated(true);

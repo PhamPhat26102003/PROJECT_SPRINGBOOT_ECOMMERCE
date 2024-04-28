@@ -47,7 +47,7 @@
 				<div style="margin-top:20px" class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0"
 					 th:each="accessory : ${accessories}" th:object="${accessory}">
 					<form th:action="@{/add-item-to-cart}" method="post">
-						<a class="product-item" th:href="@{/{id}(id=*{id})}">
+						<a class="product-item" th:href="@{/accessories/{id}(id=*{id})}">
 							<img th:src="@{/assets/{filename}(filename=*{filename})}" alt="" class="img-fluid product-thumbnail"/>
 							<h3 class="product-title" th:text="${accessory.name}"></h3>
 							<strong class="product-price" th:text="${accessory.costPrice} + '$'"></strong>
