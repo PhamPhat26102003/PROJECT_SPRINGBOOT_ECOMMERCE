@@ -28,17 +28,6 @@ public class LaptopController {
     private ICategoryService categoryService;
     @Autowired
     private IStoreService storeService;
-    @GetMapping("/laptop")
-    public String displayLaptopPage(Model model, Principal principal){
-        if(principal == null){
-            return "redirect:/login";
-        }
-        List<Laptop> laptopList = laptopService.findAll();
-        model.addAttribute("laptops", laptopList);
-        model.addAttribute("size", laptopList.size());
-        model.addAttribute("title", "Laptop page");
-        return "laptops/laptops";
-    }
 
     //Phan trang
     @GetMapping("/laptop/{pageNo}")
