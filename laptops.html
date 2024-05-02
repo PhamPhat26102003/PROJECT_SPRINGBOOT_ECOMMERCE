@@ -27,10 +27,10 @@
                 <div class="container-fluid">
 
                     <div>
-                        <form method="get">
+                        <form th:action="@{/search-result/0}" method="get">
                             <input style="border:none;height:40px;margin-bottom:20px;border-radius:5px;width:300px;padding:10px"
-                                   type="text" placeholder="Search accessories..." id="search" name="keyword" th:value="${keyword}">
-                            <button style="margin-left:10px" type="submit" class="btn btn-primary" value="search">Search</button>
+                                   type="text" placeholder="Search laptop" id="search" name="keyword">
+                            <button style="margin-left:10px" type="submit" class="btn btn-primary">Search</button>
                         </form>
                     </div>
 
@@ -38,7 +38,7 @@
                         <p class="text-center">No product</p>
                     </div>
 
-                    <a style="margin-bottom:10px;" class="btn btn-primary" th:href="@{/add-accessories}">Add new product</a>
+                    <a style="margin-bottom:10px;" class="btn btn-primary" th:href="@{/add-laptop}">Add new product</a>
 
                     <div th:if="${success}" class="text-center alert alert-success">
                         <p th:text="${success}"></p>
@@ -52,37 +52,40 @@
                         <thead>
                         <tr>
                             <th scope="col">Name</th>
+                            <th scope="col">Operating system</th>
                             <th scope="col">Quantity</th>
-                            <th scope="col">Accessories</th>
+                            <th scope="col">Laptop</th>
                             <th scope="col">Update</th>
                             <th scope="col">Action</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="accessory : ${accessories}" th:object="${accessory}">
-                            <th scope="row" th:text="${accessory.name}"></th>
-                            <td th:text="${accessory.currentQuantity}"></td>
+                        <tr th:each="laptop : ${laptops}" th:object="${laptop}">
+                            <th scope="row" th:text="${laptop.name}"></th>
+                            <td th:text="${laptop.operatingSystem}"></td>
+                            <td th:text="${laptop.currentQuantity}"></td>
                             <td style="width:100px; height:100px">
                                 <a th:href="@{/assets/{filename}(filename=*{filename})}">
                                     <img th:src="@{/assets/{filename}(filename=*{filename})}" alt="" class="img-thumbnail w-100">
                                 </a>
                             </td>
                             <td>
-                                <a th:href="@{/update-accessories/{id}(id=*{id})}" class="btn btn-primary">Update</a>
+                                <a th:href="@{/update-laptop/{id}(id=*{id})}" class="btn btn-primary">Update</a>
                             </td>
                             <td>
-                                <a th:if="${accessory.is_activated == false}"
-                                   th:href="@{/enable-accessories/{id}(id=*{id})}" class="btn btn-primary">Enabled</a>
-                                <a th:if="${accessory.is_deleted == false}"
-                                        th:href="@{/delete-accessories/{id}(id=*{id})}" class="btn btn-warning">Deleted</a>
+                                <a th:if="${laptop.is_activated == false}"
+                                   th:href="@{/enable-laptop/{id}(id=*{id})}" class="btn btn-primary">Enabled</a>
+                                <a th:if="${laptop.is_deleted == false}"
+                                   th:href="@{/delete-laptop/{id}(id=*{id})}" class="btn btn-warning">Deleted</a>
                             </td>
                         </tr>
                         </tbody>
                     </table>
 
-                    <!--Phan trang
+                    <!--Phan trang -->
                     <nav aria-label="Page navigation example">
                         <ul class="pagination">
+                            <!--Bat dau trang 0 -->
                             <li th:if="${currentPage !=0}" class="page-item">
                                 <a th:href="@{'/laptop/' + ${currentPage - 1}}" class="page-link">Previous</a>
                             </li>
@@ -96,7 +99,7 @@
                                 <a th:href="@{'/laptop/' + ${currentPage + 1}}" class="page-link">Next</a>
                             </li>
                         </ul>
-                    </nav>-->
+                    </nav>
 
                 </div>
                 <!-- End of container fluid-->

@@ -15,6 +15,9 @@ public interface ILaptopRepository extends JpaRepository<Laptop, Long> {
     @Query("SELECT p FROM Laptop p")
     Page<Laptop> pageLaptop(Pageable pageable);
 
+    @Query("SELECT p FROM Laptop p WHERE CONCAT(p.name, p.category) LIKE %?1%")
+    List<Laptop> findAll(String keyword);
+
     @Query("SELECT p FROM Laptop p WHERE p.is_activated=true AND p.is_deleted=false")
     List<Laptop> findAll();
 

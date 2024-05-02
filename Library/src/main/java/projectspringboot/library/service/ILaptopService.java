@@ -9,7 +9,7 @@ import java.util.List;
 public interface ILaptopService {
 
     //Admin
-    List<Laptop> findAll();
+    List<Laptop> findAll(String keyword);
     Laptop save(Laptop laptop);
     Laptop updateLaptop(Laptop laptop);
     Laptop findById(Long id);

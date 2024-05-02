@@ -24,7 +24,10 @@ public class LaptopService implements ILaptopService {
 
     //Admin
     @Override
-    public List<Laptop> findAll() {
+    public List<Laptop> findAll(String keyword) {
+        if(keyword != null){
+            return laptopRepository.findAll(keyword);
+        }
         return laptopRepository.findAll();
     }
 

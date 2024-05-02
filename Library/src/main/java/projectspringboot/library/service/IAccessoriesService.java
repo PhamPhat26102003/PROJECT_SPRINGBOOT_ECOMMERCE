@@ -6,8 +6,7 @@ import projectspringboot.library.model.Accessories;
 import java.util.List;
 
 public interface IAccessoriesService {
-    List<Accessories> findAll();
-    List<Accessories> findAllAccessoriesByActivated();
+    List<Accessories> findAll(String keyword);
     Accessories findById(Long id);
     Accessories save(Accessories accessories);
     Accessories updateAccessories(Accessories accessories);

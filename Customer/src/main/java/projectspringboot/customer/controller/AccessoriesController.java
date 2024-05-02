@@ -1,6 +1,7 @@
 package projectspringboot.customer.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,9 +21,10 @@ public class AccessoriesController {
     private ICategoryService categoryService;
 
     @GetMapping("/list-accessory")
-    public String displayListAccessoriesPage(Model model){
-        List<Accessories> accessories = accessoriesService.findAllAccessoriesByActivated();
+    public String displayListAccessoriesPage(Model model, @Param("keyword") String keyword){
+        List<Accessories> accessories = accessoriesService.findAll(keyword);
         model.addAttribute("accessories", accessories);
+        model.addAttribute("keyword", keyword);
         model.addAttribute("title", "List Accessories");
         return "accessories/list-accessory";
     }

@@ -2,6 +2,7 @@ package projectspringboot.admin.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,12 +28,13 @@ public class AccessoriesController {
     private IStoreService storeService;
 
     @GetMapping("/accessories")
-    public String displayAccessoriesPage(Model model, Principal principal){
+    public String displayAccessoriesPage(Model model, Principal principal, @Param("keyword") String keyword){
         if(principal == null){
             return "redirect:/login";
         }
-        List<Accessories> accessoriesList = accessoriesService.findAll();
+        List<Accessories> accessoriesList = accessoriesService.findAll(keyword);
         model.addAttribute("accessories", accessoriesList);
+        model.addAttribute("keyword", keyword);
         model.addAttribute("size", accessoriesList.size());
         model.addAttribute("title", "Accessories page");
         return "accessories/accessories";
@@ -139,11 +141,11 @@ public class AccessoriesController {
         }
     }
 
-    @GetMapping("/search-result")
-    public String searchAccessories(@RequestParam("keyword") String keyword, Model model){
-        List<Accessories> accessories = accessoriesService.searchAccessories(keyword);
-        model.addAttribute("title", "Result");
-        model.addAttribute("accessories", accessories);
-        return "accessories/accessories-result";
-    }
+//    @GetMapping("/search-result")
+//    public String searchAccessories(@RequestParam("keyword") String keyword, Model model){
+//        List<Accessories> accessories = accessoriesService.searchAccessories(keyword);
+//        model.addAttribute("title", "Result");
+//        model.addAttribute("accessories", accessories);
+//        return "accessories/accessories-result";
+//    }
 }

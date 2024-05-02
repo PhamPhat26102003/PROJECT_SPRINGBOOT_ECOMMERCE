@@ -39,6 +39,12 @@
 	<div class="product-section" style="margin-bottom: 30px">
 		<div class="container">
 
+			<form method="get">
+				<input style="border:none;height:40px;margin-bottom:20px;border-radius:5px;width:300px;padding:10px"
+					   type="text" placeholder="Search accessories..." id="search" name="keyword" th:value="${keyword}">
+				<button style="margin-left:10px" type="submit" class="btn btn-primary" value="search">Search</button>
+			</form>
+
 			<p class="text-center" style="font-size:30px; font-weight:500">Accessories Gaming</p>
 
 			<div class="row">

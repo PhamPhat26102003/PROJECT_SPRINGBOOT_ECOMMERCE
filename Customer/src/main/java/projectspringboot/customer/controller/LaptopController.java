@@ -2,6 +2,7 @@ package projectspringboot.customer.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,9 +35,10 @@ public class LaptopController {
     }
 
     @GetMapping("/list-laptop")
-    public String displayListLaptopPage( Model model, Principal principal){
-        List<Laptop> listLaptop = laptopService.findAll();
+    public String displayListLaptopPage(Model model, Principal principal, @Param("keyword") String keyword){
+        List<Laptop> listLaptop = laptopService.findAll(keyword);
         model.addAttribute("laptops", listLaptop);
+        model.addAttribute("keyword", keyword);
         model.addAttribute("title", "List laptop gaming");
         return "laptops/list-laptop";
     }

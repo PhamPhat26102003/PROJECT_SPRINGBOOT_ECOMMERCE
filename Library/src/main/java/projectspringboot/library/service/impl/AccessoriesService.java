@@ -17,14 +17,13 @@ public class AccessoriesService implements IAccessoriesService {
     private IStoreService storeService;
 
     @Override
-    public List<Accessories> findAll() {
+    public List<Accessories> findAll(String keyword) {
+        if(keyword != null){
+            return accessoriesRepository.findAll(keyword);
+        }
         return accessoriesRepository.findAll();
     }
 
-    @Override
-    public List<Accessories> findAllAccessoriesByActivated() {
-        return accessoriesRepository.findAllAccessoriesByActivated();
-    }
 
     @Override
     public Accessories findById(Long id) {
