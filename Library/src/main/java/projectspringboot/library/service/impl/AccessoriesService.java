@@ -44,6 +44,8 @@ public class AccessoriesService implements IAccessoriesService {
             accessoriesUpdate.setCurrentQuantity(accessories.getCurrentQuantity());
             accessoriesUpdate.setCostPrice(accessories.getCostPrice());
             accessoriesUpdate.setCategory(accessories.getCategory());
+            accessoriesUpdate.set_activated(accessories.is_activated());
+            accessoriesUpdate.set_deleted(accessories.is_deleted());
             if(!accessories.getImage().isEmpty()){
                 storeService.deleteFile(accessories.getFilename());
                 String filename = storeService.storeFile(accessories.getImage());

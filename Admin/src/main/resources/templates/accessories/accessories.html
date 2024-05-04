@@ -71,10 +71,10 @@
                                 <a th:href="@{/update-accessories/{id}(id=*{id})}" class="btn btn-primary">Update</a>
                             </td>
                             <td>
-                                <a th:if="${accessory.is_activated == false}"
-                                   th:href="@{/enable-accessories/{id}(id=*{id})}" class="btn btn-primary">Enabled</a>
-                                <a th:if="${accessory.is_deleted == false}"
-                                        th:href="@{/delete-accessories/{id}(id=*{id})}" class="btn btn-warning">Deleted</a>
+                                <a th:if="${accessory.is_activated}==false"
+                                   th:href="@{/enable-accessories/(id=*{id})}" class="btn btn-primary">Enabled</a>
+                                <a th:if="${accessory.is_deleted}==false"
+                                        th:href="@{/delete-accessories/(id=*{id})}" class="btn btn-warning">Deleted</a>
                             </td>
                         </tr>
                         </tbody>

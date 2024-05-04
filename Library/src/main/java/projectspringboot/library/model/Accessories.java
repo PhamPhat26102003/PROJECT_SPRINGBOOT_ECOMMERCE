@@ -29,4 +29,10 @@ public class Accessories {
     private Category category;
     private boolean is_activated;
     private boolean is_deleted;
+
+    public Accessories(String name){
+        this.name = name;
+        this.is_activated = true;
+        this.is_deleted = false;
+    }
 }

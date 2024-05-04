@@ -76,8 +76,8 @@ public class AccessoriesController {
         }
     }
 
-    @RequestMapping(value = "/enable-accessories/{id}", method = {RequestMethod.PUT, RequestMethod.GET})
-    public String enableById(@PathVariable("id") Long id, RedirectAttributes redirectAttributes){
+    @RequestMapping(value = "/enable-accessories", method = {RequestMethod.PUT, RequestMethod.GET})
+    public String enableById(Long id, RedirectAttributes redirectAttributes){
         try{
             accessoriesService.activatedById(id);
             redirectAttributes.addFlashAttribute("success", "Enable success");
@@ -93,8 +93,8 @@ public class AccessoriesController {
         }
     }
 
-    @RequestMapping(value = "/delete-accessories/{id}", method = {RequestMethod.PUT, RequestMethod.GET})
-    public String deleteById(@PathVariable("id") Long id, RedirectAttributes redirectAttributes){
+    @RequestMapping(value = "/delete-accessories", method = {RequestMethod.PUT, RequestMethod.GET})
+    public String deleteById(Long id, RedirectAttributes redirectAttributes){
         try{
             accessoriesService.deletedById(id);
             redirectAttributes.addFlashAttribute("success", "Delete success");
